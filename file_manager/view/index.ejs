@@ -20,60 +20,14 @@
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                       
                         <% categories.forEach((ele,index)=>{%>
-                            <% if(index == 0){ %>
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="<%= ele.name %>-tab" data-toggle="tab" href="#<%= ele.name %>" role="tab" aria-controls="<%= ele.name %>" aria-selected="true"><%= ele.name %></a>
-                                </li>
-                            <% }else{ %>   
-                                <li class="nav-item">
-                                    <a class="nav-link " id="<%= ele.name %>-tab" data-toggle="tab" href="#<%= ele.name %>" role="tab" aria-controls="<%= ele.name %>" aria-selected="false"><%= ele.name %></a>
-                                </li> 
-                            <% } %>    
+                            <li class="nav-item" onclick="selectFolder(<%=JSON.stringify(ele)%>)">
+                                <a class="nav-link <% if(index == 0){ %> active <% } %>" id="<%= ele.name %>-tab" data-toggle="tab" href="#<%= ele.name %>" role="tab" aria-controls="<%= ele.name %>" aria-selected="true"><%= ele.name %></a>
+                            </li>      
                         <% }) %>   
     
                     </ul>
                     <div class="tab-content" id="myTabContent">
 
-                        <!-- folder loop function start -->
-                         <% function loop(arr,id){%>
-                            <% arr.forEach((e,i)=>{ %>
-                                <%if(e.parent_id==id){%>
-                                    <ul class="folder-list hideChild drop<%=id%>" style="padding-left: 15px;">
-                                        <li class="border-0">
-                                            <span  class="border-bottom  py-2 d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <i class="fa fa-folder"></i><%=e.folder_name%>
-                                                </div>
-                                                 <div>
-                                                     <i class="fa fa-chevron-down" id="folder_<%=e.id%>"  aria-hidden="true" onclick="selectedFolder('<%=e.id%>')"></i>
-                                                     <i class="fa fa-plus-circle" data-toggle="modal" onclick="PrivateFolder('<%=e.id%>')" data-target="#PrivateFolder" aria-hidden="true"></i>
-                                                     <i class="fa fa-cloud-upload" data-toggle="modal" onclick="uploadFile('<%=e.folder_name%>','<%=e.id%>')" data-target="#Upload" aria-hidden="true"></i>
-                                                 </div>
-                                            </span>
-                                            <%loop(arr,e.id)%>
-                                            <%docs(doc,e.id)%>
-                                        </li>
-                                    </ul>
-                                <%}%>
-                            <% }) %>
-                        <%}%>    
-                        <!-- folder loop function end -->
-
-                        <!-- docs loop  function start -->
-                         <% function docs(arr,id){%>
-                            <% arr.forEach((e,i)=>{ %>
-                                <%if(e.file_id==id){%>
-                                    <ul class="folder-list hideChild drop<%=id%>" style="padding-left: 15px;">
-                                        <li  class="border-0 ">
-                                            <a href=""  class="border-bottom ">
-                                                <i class="fa fa-file" aria-hidden="true"></i><%=e.name%>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                <%}%>
-                            <% }) %>
-                        <%}%>    
-                        <!-- docs loop function end -->
 
                         <div class="tab-pane fade show active" id="Audio" role="tabpanel" aria-labelledby="Audio=tab">
                             <ul class="folder-list" style="padding: 0">
@@ -85,7 +39,7 @@
                                                    <i class="fa fa-folder"></i><%=ele.folder_name%>
                                                </div>
                                                 <div>
-                                                    <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>')"></i>
+                                                    <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>','<%=ele.categories%>')"></i>
                                                     <i class="fa fa-plus-circle"  data-toggle="modal" onclick="PrivateFolder('<%=ele.id%>')"  data-target="#PrivateFolder" aria-hidden="true"></i>
                                                     <i class="fa fa-cloud-upload"  data-toggle="modal" onclick="uploadFile('<%=ele.folder_name%>','<%=ele.id%>')"  data-target="#Upload" aria-hidden="true"></i>
                                                 </div>
@@ -108,7 +62,7 @@
                                                     <i class="fa fa-folder"></i><%=ele.folder_name%>
                                                 </div>
                                                  <div>
-                                                    <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>')"></i>
+                                                    <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>','<%=ele.categories%>')"></i>
                                                      <i class="fa fa-plus-circle" data-toggle="modal" onclick="PrivateFolder('<%=ele.id%>')" data-toggle="modal"  data-target="#PrivateFolder" aria-hidden="true"></i>
                                                      <i class="fa fa-cloud-upload" data-toggle="modal" onclick="uploadFile('<%=ele.folder_name%>','<%=ele.id%>')" data-target="#Upload" aria-hidden="true"></i>
                                                  </div>
@@ -131,7 +85,7 @@
                                                     <i class="fa fa-folder"></i><%=ele.folder_name%>
                                                 </div>
                                                  <div>
-                                                     <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>')"></i>
+                                                     <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>','<%=ele.categories%>')"></i>
                                                      <i class="fa fa-plus-circle" data-toggle="modal" onclick="PrivateFolder('<%=ele.id%>')" data-toggle="modal"  data-target="#PrivateFolder" aria-hidden="true"></i>
                                                      <i class="fa fa-cloud-upload" data-toggle="modal" onclick="uploadFile('<%=ele.folder_name%>','<%=ele.id%>')" data-target="#Upload" aria-hidden="true"></i>
                                                  </div>
@@ -154,7 +108,7 @@
                                                     <i class="fa fa-folder"></i><%=ele.folder_name%>
                                                 </div>
                                                  <div>
-                                                     <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>')"></i>
+                                                     <i class="fa fa-chevron-down" id="folder_<%=ele.id%>"  aria-hidden="true" onclick="selectedFolder('<%=ele.id%>','<%=ele.categories%>')"></i>
                                                      <i class="fa fa-plus-circle" data-toggle="modal" onclick="PrivateFolder('<%=ele.id%>')" data-toggle="modal"  data-target="#PrivateFolder" aria-hidden="true"></i>
                                                      <i class="fa fa-cloud-upload" data-toggle="modal" onclick="uploadFile('<%=ele.folder_name%>','<%=ele.id%>')" data-target="#Upload" aria-hidden="true"></i>
                                                  </div>
@@ -277,6 +231,48 @@
     </div>
 </div>
 
+
+
+<!-- folder loop function start -->
+    <% function loop(arr,id){%>
+        <% arr.forEach((e,i)=>{ %>
+            <%if(e.parent_id==id){%>
+                <ul class="folder-list hideChild drop<%=id%>" style="padding-left: 15px;">
+                    <li class="border-0">
+                        <span  class="border-bottom  py-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fa fa-folder"></i><%=e.folder_name%>
+                            </div>
+                                <div>
+                                    <i class="fa fa-chevron-down" id="folder_<%=e.id%>"  aria-hidden="true" onclick="selectedFolder('<%=e.id%>','<%=e.categories%>',<%=e.parent_id%>)"></i>
+                                    <i class="fa fa-plus-circle" data-toggle="modal" onclick="PrivateFolder('<%=e.id%>')" data-target="#PrivateFolder" aria-hidden="true"></i>
+                                    <i class="fa fa-cloud-upload" data-toggle="modal" onclick="uploadFile('<%=e.folder_name%>','<%=e.id%>')" data-target="#Upload" aria-hidden="true"></i>
+                                </div>
+                        </span>
+                        <%loop(arr,e.id)%>
+                        <%docs(doc,e.id)%>
+                    </li>
+                </ul>
+            <%}%>
+        <% }) %>
+    <%}%>    
+<!-- folder loop function end -->
+
+<!-- docs loop  function start -->
+        <% function docs(arr,id){%>
+        <% arr.forEach((e,i)=>{ %>
+            <%if(e.file_id==id){%>
+                <ul class="folder-list hideChild drop<%=id%>" style="padding-left: 15px;">
+                    <li  class="border-0 ">
+                        <a href=""  class="border-bottom ">
+                            <i class="fa fa-file" aria-hidden="true"></i><%=e.name%>
+                        </a>
+                    </li>
+                </ul>
+            <%}%>
+        <% }) %>
+    <%}%>    
+<!-- docs loop function end -->
 
 
 

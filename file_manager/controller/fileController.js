@@ -98,18 +98,67 @@ module.exports = {
 
 
 
-    files:function(req,res){
+    files:async function(req,res){
         //  console.log(req.query)
        const input = {
          file_id:req.query.folderId
        }
-      
-        model.docsGet(input,function(data){
-          res.json({
-             files:data
-          })
-          
+        let dir = new Promise(function(resolve) {
+            model.inFolder(input,function(data){
+               resolve(data)
+            })
+        });    
+
+        let file = new Promise(function(resolve) {
+            model.docsGet(input,function(data){
+               resolve(data)
+            })
+        });   
+        
+        const inFolder = [...await dir, ...await file]
+        res.json({
+            inside:inFolder
         })
+    },
+
+    directory:function(req,res){
+        // console.log(req.query)
+       const input = {
+         dir:req.query.dir
+       }
+       model.directory(input,function(dir){
+        res.json({
+            dir:dir
+         })
+       })
+       
+    },
+    tabFolder:async function(req,res){
+       const dirInput = {
+         dir:req.query.dir
+       }
+
+       const fileInput = {
+        file_id:req.query.dir.id
+       }
+       let dir = new Promise(function(resolve) {
+            model.tabFolder(dirInput,function(dir){
+                resolve(dir)
+               
+            })
+        });  
+
+        let file = new Promise(function(resolve) {
+            model.docsGet(fileInput,function(data){
+               resolve(data)
+            })
+        });  
+
+        const inFolder = [...await dir, ...await file]
+            res.json({
+                    dir:inFolder
+            })
+       
     }
 
 

@@ -51,7 +51,6 @@ module.exports = {
     //Select file
     docsGet:function(input,callback){
         var sql = 'SELECT * FROM docs WHERE file_id = ?';
-      //  var sql = "`INSERT INTO docs SET ? ";
         db.query(sql,[input.file_id],function(err,data,fields){
             if(!!err){
                 console.log(err)
@@ -61,10 +60,49 @@ module.exports = {
         })
     },
 
+    //inside folder
+    inFolder:function(input,callback){
+         var sql = `SELECT * FROM files WHERE parent_id =${input.file_id}`
+         db.query(sql,function(err,data,fields){
+             if(!!err){
+                console.log(err)
+             }else{
+               return callback(data)
+             }
+         })
+    },
+
 
     folder:function(input,callback){
         var sql = `INSERT INTO files SET ?`;
          db.query(sql,input,function(err,data,fields){
+             if(!!err){
+                 console.log(err)
+             }else{
+                 return callback(data)
+             }
+         })
+    },
+
+    directory:function(input,callback){
+        var sql = `SELECT * FROM files where categories='${input.dir.name}' and parent_id IS NULL`
+       // var sql = `SELECT * FROM files where categories='${input.dir.name}'`
+         db.query(sql,function(err,data,fields){
+             if(!!err){
+                 console.log(err)
+             }else{
+                 return callback(data)
+             }
+         })
+    },
+    
+    tabFolder:function(input,callback){
+        if(input.dir.id){
+            var sql = `SELECT * FROM files where categories='${input.dir.name}' and parent_id IS NOT NULL`
+        }else{
+            var sql = `SELECT * FROM files where categories='${input.dir.name}' and parent_id IS NULL`
+        }
+         db.query(sql,function(err,data,fields){
              if(!!err){
                  console.log(err)
              }else{
