@@ -11,5 +11,6 @@ module.exports = {
     files:router.get('/folder/files',Controller.files),
     directory:router.get('/folder/directory',Controller.directory),
     tabFolder:router.get('/tab/folder',Controller.tabFolder),
+    delete:router.get('/folder/file/delete',Controller.delete),
   
 }

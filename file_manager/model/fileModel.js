@@ -111,5 +111,52 @@ module.exports = {
          })
     },
 
+    delete:function(input,callback){
+        if(input.file_id){
+            var sql = `DELETE * FROM files where file_id= ?`
+        }else{
+            var sql = `SELECT * FROM files where id = ${input.id} OR parent_id = ${input.id}`
+        }
+        db.query(sql,input,function(err,data,fields){
+            if(err) throw err
+
+            return callback(data)
+        })
+    },
+
+    findFolderId:function(input,callback){
+        var temp = [input.id]
+        function findIds(arr){
+        let myPromise = new Promise(function(resolve, reject){ 
+            arr.map(id=>{
+                    var sql = `SELECT * FROM files where parent_id = ${id}`    
+                    db.query(sql,function(err,data,fields){
+                      if(err) throw err
+                      let map = []
+                      data.map(ele=>{
+                        map.push(ele.id)
+                      })
+                        resolve(map)
+                    })
+                })
+            });
+            
+            myPromise.then(ele=>{
+                 if(ele.length){
+                     findIds(ele)
+                     ele.map(e=>{
+                        temp.push(e)
+                     })
+                 }else{
+                    return callback(temp)
+                 }
+            })
+        }   
+
+        findIds([input.id])
+        
+       
+    }
+
  
 }

@@ -6,6 +6,7 @@ var path = require('path');
 const { resolve } = require("path");
 const { rejects } = require("assert");
 const { checkPrime } = require("crypto");
+const { copyFileSync } = require("fs");
 
 
 
@@ -159,6 +160,42 @@ module.exports = {
                     dir:inFolder
             })
        
+    },
+
+    //delete folder
+    delete: function(req,res){
+     try{
+       
+         if(req.query.deleteId){
+            const id = req.query.deleteId;
+            const input = {}
+            if(id.folderId){
+                input.id = id.folderId  
+                model.findFolderId(input,function(data){
+                    console.log(data)
+                })
+
+            }
+
+
+            if(id.fileId){
+                // input.file_id = id.fileId 
+                // model.delete(input,function(data){
+                //     console.log(data)
+                // })
+            }
+            
+            
+           
+             
+         }
+
+
+
+        }catch(err) {
+           res.send('something went wrong')
+        }
+
     }
 
 

@@ -25,15 +25,24 @@ function selectedFolder(folderId,categories,tabId=null){
                 $('#file_container').append(`
                     <div class="file-box">
                         <div class="file">
-                            <a href="#">
+                            <div>
                                 <span class="corner"></span>
                                 <div class="icon">`+
                                     (ele.type == 'file' ? '<i class="img-responsive fa fa-film"></i>' : '<i class="bi bi-folder-fill"></i>')
                                 +`</div>
-                                <div class="file-name text-center">`+
-                                   (ele.type == 'file' ? ele.name : ele.folder_name)
-                                +`</div>
-                            </a>
+                                <div class="file-name text-center d-flex justify-content-center g-2">
+                                  <div>
+                                    `+
+                                    (ele.type == 'file' ? ele.name : ele.folder_name)
+                                    +`
+                                    <div>
+                                        <span><i class="bi bi-eye-fill px-2"></i></span>
+                                        <span><i class="bi bi-pencil-square px-2"></i></span>
+                                        <span><i class="bi bi-trash-fill px-2" onclick="deleteUpload({`+(ele.type == 'file' ? 'fileId' : 'folderId') +`:${ele.id}})"></i></span>
+                                    </div>
+                                  </div>  
+                                </div>
+                            </div>
                         </div>
                     </div>
                `)
@@ -43,7 +52,6 @@ function selectedFolder(folderId,categories,tabId=null){
         })
     }
 }
-
 //tab selected 
 function selectFolder(object){
     $('#file_container').empty()
@@ -57,15 +65,22 @@ function selectFolder(object){
             $('#file_container').append(`
                 <div class="file-box">
                     <div class="file">
-                        <a href="#">
+                        <div>
                             <span class="corner"></span>
                             <div class="icon">
                                <i class="bi bi-folder-fill"></i>
                             </div>
-                            <div class="file-name text-center">
-                                ${ele.folder_name}
+                            <div class="file-name text-center d-flex justify-content-center g-2">
+                               <div>
+                               ${ele.folder_name}
+                                <div>
+                                    <span><i class="bi bi-eye-fill px-2"></i></span>
+                                    <span><i class="bi bi-pencil-square px-2"></i></span>
+                                    <span><i class="bi bi-trash-fill px-2" onclick="deleteUpload({'folderId':${ele.id}})"></i></span>
+                                </div>
+                               </div>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
            `)
@@ -74,7 +89,6 @@ function selectFolder(object){
         }
     })
 }
-
 // //tab folder select
 function selectTabFolder(object){
     $('#file_container').empty()
@@ -89,15 +103,24 @@ function selectTabFolder(object){
                 $('#file_container').append(`
                     <div class="file-box">
                         <div class="file">
-                            <a href="#">
+                            <div>
                                 <span class="corner"></span>
                                 <div class="icon">`+
                                    (ele.type == 'file' ? '<i class="img-responsive fa fa-film"></i>' : '<i class="bi bi-folder-fill"></i>')
                                 +`</div>
-                                <div class="file-name text-center">`+
-                                   (ele.type == 'file' ? ele.name : ele.folder_name)
-                                +`</div>
-                            </a>
+                                <div class="file-name text-center d-flex justify-content-center g-2">
+                                  <div>
+                                    `+
+                                    (ele.type == 'file' ? ele.name : ele.folder_name)
+                                    +`
+                                    <div>
+                                        <span><i class="bi bi-eye-fill px-2"></i></span>
+                                        <span><i class="bi bi-pencil-square px-2"></i></span>
+                                        <span><i class="bi bi-trash-fill px-2"  onclick="deleteUpload({`+(ele.type == 'file' ? 'fileId' : 'folderId') +`:${ele.id}})"></i></span>
+                                    </div>
+                                  </div>  
+                                </div>
+                            </div>
                         </div>
                     </div>
                `)
