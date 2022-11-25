@@ -8,9 +8,6 @@ const { rejects } = require("assert");
 const { checkPrime } = require("crypto");
 const { copyFileSync } = require("fs");
 
-
-
-
 module.exports = {
 
     //index
@@ -32,9 +29,7 @@ module.exports = {
             folder_name:req.query.name,
             parent_id:req.query.parentId ?? null
         }
-
         folderBuilder(req.query.category,req.query.name)
-        //insert data
         model.folder(input,function(data){
             res.redirect('back')
         })
@@ -47,7 +42,6 @@ module.exports = {
         if(req.files && Object.keys(req.files).length !== 0) {
             var dirname =path.dirname(__dirname);
            
-
             //array push promise method
             const tOut = (t) => {
                 return new Promise((resolve, reject) => {
@@ -55,7 +49,7 @@ module.exports = {
                     resolve(t)
                   },1000)
                 })
-              }
+            }
 
         if(Array.isArray(req.files.files)){
             req.files.files.map(async ele => {
@@ -171,23 +165,30 @@ module.exports = {
             const input = {}
             if(id.folderId){
                 input.id = id.folderId  
-                model.findFolderId(input,function(data){
-                    console.log(data)
+                const folderId = new Promise(function(resolve, reject){ 
+                    model.findFolderId(input,function(data){
+                        resolve(data)
+                    })
+                })
+                folderId.then(ele=>{
+                    model.deleteAll(ele,function(data){
+                        res.json({
+                            success:data
+                        })
+                    })
                 })
 
             }
 
 
             if(id.fileId){
-                // input.file_id = id.fileId 
-                // model.delete(input,function(data){
-                //     console.log(data)
-                // })
-            }
-            
-            
-           
-             
+                input.id = id.fileId  
+                model.delete(input,function(data){
+                    res.json({
+                        success:data
+                    })
+                })
+            } 
          }
 
 

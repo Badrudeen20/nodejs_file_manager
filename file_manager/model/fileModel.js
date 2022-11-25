@@ -112,14 +112,11 @@ module.exports = {
     },
 
     delete:function(input,callback){
-        if(input.file_id){
-            var sql = `DELETE * FROM files where file_id= ?`
-        }else{
-            var sql = `SELECT * FROM files where id = ${input.id} OR parent_id = ${input.id}`
-        }
-        db.query(sql,input,function(err,data,fields){
-            if(err) throw err
+    
+        var sql = `DELETE FROM docs where id= ?`;
 
+        db.query(sql,[input.id],function(err,data,fields){
+            if(err) throw err
             return callback(data)
         })
     },
@@ -152,10 +149,19 @@ module.exports = {
                  }
             })
         }   
-
         findIds([input.id])
-        
-       
+    },
+
+    deleteAll:function(input,callback){
+        var docs_sql = `DELETE FROM docs WHERE file_id IN  (?)`;
+        var file_sql = `DELETE FROM files WHERE id IN  (?)`;
+        db.query(docs_sql,[input],function(err,data,fields){
+           if(err) throw err
+           db.query(file_sql,[input],function(err,data,fields){
+              if(err) throw err
+              return callback(data)
+           })
+        })
     }
 
  
